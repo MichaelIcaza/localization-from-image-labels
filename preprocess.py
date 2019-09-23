@@ -31,10 +31,11 @@ The other files will assume the data is in the second format.
 import os
 import pickle as pkl
 import tifffile as tiff #Imports "metamorph" .stk files
+from skimage.measure import block_reduce
 
 import numpy as np
 
-def stk_to_npy(inp_dir, out_dir):
+def stk_to_npy(inp_dir, out_dir, half_resolution=True):
     #first, we try to create the output directory, if it already exists we don't do anything. 
     #This means if this process was aborted and restart, it may have some issues
     #although its more likely it will just overwite the old files
@@ -47,6 +48,8 @@ def stk_to_npy(inp_dir, out_dir):
     
     #adjustable parameters if you're trying to canabalize this function
     img_slice_size = (10, 800, 800, 1)
+    if half_resolution:
+        img_slice_size = (10, 400, 400, 1)
     max_depth = img_slice_size[0]   
     
     #dictionary of patient ID (also, directory info) to Class ID (note, 1 is ChRCC diagnosed tissue samples)
@@ -58,7 +61,7 @@ def stk_to_npy(inp_dir, out_dir):
                       '20':0,'21':1,'22':1,'23':0,'24':1,
                       '25':0,'26':0,'28':1,'29':0,'31':0}
     
-    skip_terms = ["Color", "region"]#if these terms are in the file name, do not process
+    skip_terms = ["Color", "region", "power1"]#if these terms are in the file name, do not process
 
     for patient_id in patient_status.keys():#we visit the patient id folders (this skips over some patients in the original dataset)
         patient_dir = inp_dir+"/"+patient_id+"/"#we append patient ID, this is how the original file structure was set up
@@ -70,7 +73,9 @@ def stk_to_npy(inp_dir, out_dir):
                 channel -=1 #transform from the 1..4 ch # to the 0..3 index value
                 with tiff.TiffFile(patient_dir+filename) as tif:
                     img = tif.asarray().astype(np.uint16)
-                    
+                    if half_resolution:
+                        img = block_reduce(img, (1,2,2), np.average)
+                        img = np.rint(img).astype(np.uint16)
                     #Crops/pads layers to size 10
                     if np.shape(img)[0] > max_depth:
                         img = img[:max_depth,:,:]#crops if too many layers
@@ -90,3 +95,7 @@ def stk_to_npy(inp_dir, out_dir):
     #numpy doesn't like saving dictionaries, so we pickle it
     with open(out_dir+'/image_classes.pkl', 'wb') as cucumber:
         pkl.dump(file_data, cucumber)
+        
+print("running default parameters (including half resolution)")
+print(r"Looking for 'E:\Wu\Data', writing to 'E:\Wu\NumpyData'")
+stk_to_npy("E:/Wu/Data", "E:/Wu/NumpyData", half_resolution=True)
