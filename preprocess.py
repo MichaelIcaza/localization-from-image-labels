@@ -48,11 +48,11 @@ def stk_to_npy(inp_dir, out_dir):
     #dictionary of patient ID (also, directory info) to Class ID (note, 1 is ChRCC diagnosed tissue samples)
     #normally this would be in a csv but I got it as text in an email so we're not going to talk about this. 
     file_data = {}#we'll collect name data for this as we open files
-    patient_status = {'02':1,'04':1,'06':0,'07':1,'09':1,
-                      '11':1,'12':0,'13':0,'14':0,'15':0,
-                      '16':1,'17':1,'18':1,'19':1,'20':0,
-                      '21':1,'22':1,'23':0,'24':1,'25':0,
-                      '26':0,'28':1,'29':0,'31':0}
+    patient_status = {'02':1,'04':1,'05':0,'06':0,'07':1,
+                      '09':1,'11':1,'12':0,'13':0,'14':0,
+                      '15':0,'16':1,'17':1,'18':1,'19':1,
+                      '20':0,'21':1,'22':1,'23':0,'24':1,
+                      '25':0,'26':0,'28':1,'29':0,'31':0}
     
     skip_terms = ["Color", "region"]#if these terms are in the file name, do not process
 
