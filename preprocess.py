@@ -1,4 +1,8 @@
 """
+
+To run this file, execute 
+    >stk_to_npy([input data directory], [output data directory])
+
 This file contains a single function for transforming the original .stk data into .npy samples, as well as a {file_name: class} dictionary
 
 The rest of this project assumes the file structure is set up as shown below. 
