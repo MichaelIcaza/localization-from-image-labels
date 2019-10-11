@@ -7,8 +7,11 @@ Our data set in this example is a set of 110 images split into two classes. The 
 
 Knowing only the classification of the patient, we manage to localize the signals which indicate malignancy. We believe that this method can help researchers better learn discrimitory features when applying imagining techiques in novel applications. 
 
-
+Below we show 3 examples of True Positive Classifications when the top 6 patches above 0.5 threshold displayed. 
 
 ![sample_output](sample_output.png?raw=True "True Positive Samples")
+
+The localization can help diagnose the cause of False Positive classification as well. 
+
 ![sample_output](sample_false_positive.png?raw=True "False Positive Samples")
 
