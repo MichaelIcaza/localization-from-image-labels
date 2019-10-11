@@ -9,4 +9,4 @@ Knowing only the classification of the patient, we manage to localize the signal
 
 
 
-![sample_output](michaelicaza.github.com/localization-from-image-labels/img/sample_output.png)
+![sample_output](sample_output.png?raw=True "Sample Output")
